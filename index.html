@@ -43,60 +43,90 @@ tr.highlight td{background:#EAF3DE;font-weight:500}
 p{font-size:13px;color:#555;margin-bottom:.5rem}
 .btn{background:#f5f5f2;border:1px solid #ccc;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
 .btn:hover{background:#ebebeb}
+.btn-pdf{background:#003333;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-pdf:hover{background:#004d4d}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
 .metric-card{background:#fff;border-radius:8px;padding:.75rem 1rem;border:1px solid #eee}
 .metric-label{font-size:11px;color:#888;margin-bottom:2px}
 .metric-val{font-size:22px;font-weight:500}
 .nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
 .sep{border-top:1px solid #eee;padding-top:1rem;margin-top:.2rem}
-@media print{.btn,.nav{display:none}.section{break-inside:avoid}.collapsed .section-body{display:block!important}}
+.pdf-bar{background:#fff;border:1px solid #ddd;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.pdf-instructions{font-size:12px;color:#555;flex:1}
+.pdf-instructions strong{color:#003333}
+@media print{
+  .no-print{display:none!important}
+  .section{break-inside:avoid;border:1px solid #ccc}
+  .collapsed .section-body{display:block!important}
+  .check-box{border:1px solid #999!important}
+  body{background:#fff}
+  .page{padding:.5rem}
+}
 </style>
 </head>
 <body>
 <div class="page">
 
-<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.25rem">
+<!-- HEADER -->
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem">
 <div>
 <h1>Medical Scribe Onboarding Guide</h1>
 <div class="subtitle">Post-acute care / nursing home setting &middot; Clinical reference, coding &amp; daily workflow</div>
 </div>
-<button class="btn" onclick="window.print()">Print / Save PDF</button>
 </div>
 
+<!-- PDF SAVE BAR -->
+<div class="pdf-bar no-print">
+<div class="pdf-instructions">
+<strong>To save as PDF:</strong> Click the button &rarr; In the print dialog, set <strong>Destination</strong> to <strong>"Save as PDF"</strong> &rarr; Click Save. All sections will expand automatically for the full document.
+</div>
+<button class="btn-pdf" onclick="printAll()">Save as PDF / Print</button>
+</div>
+
+<!-- METRICS -->
 <div class="metrics">
-<div class="metric-card"><div class="metric-label">Diagnoses covered</div><div class="metric-val">9</div></div>
-<div class="metric-card"><div class="metric-label">ICD-10 codes</div><div class="metric-val">50+</div></div>
+<div class="metric-card"><div class="metric-label">Diagnoses covered</div><div class="metric-val">17</div></div>
+<div class="metric-card"><div class="metric-label">ICD-10 codes</div><div class="metric-val">80+</div></div>
 <div class="metric-card"><div class="metric-label">CPT codes</div><div class="metric-val">12</div></div>
 <div class="metric-card"><div class="metric-label">Workflow steps</div><div class="metric-val">7</div></div>
 </div>
 
-<div class="info-box" style="margin-bottom:1rem">Use the toggles to expand/collapse each section. Use the checklist in Section 4 every morning before rounds.</div>
+<div class="info-box no-print" style="margin-bottom:1rem">Click any section header to expand or collapse. Use the morning checklist below before every rounding shift.</div>
 
-<div class="nav">
+<!-- NAV -->
+<div class="nav no-print">
+<button class="btn" onclick="jumpTo('checklist')">Morning checklist</button>
 <button class="btn" onclick="jumpTo('dx')">Diagnoses</button>
 <button class="btn" onclick="jumpTo('cpt')">CPT codes</button>
 <button class="btn" onclick="jumpTo('mistakes')">Mistakes to avoid</button>
-<button class="btn" onclick="jumpTo('checklist')">Morning checklist</button>
 <button class="btn" onclick="jumpTo('retire')">Retiring diagnoses</button>
 </div>
 
-<!-- SECTION 1: DIAGNOSES -->
+<!-- SECTION 1: CHECKLIST (FIRST) -->
+<div class="section" id="checklist">
+<div class="section-header" onclick="toggle(this)"><h2>Section 1 &mdash; Daily morning workflow checklist</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+<p style="margin-bottom:.75rem">Complete every morning before the physician begins rounds. Check off each item as you go.</p>
+<div id="cl"></div>
+<button class="btn no-print" style="margin-top:.75rem" onclick="resetAll()">Reset all checks</button>
+</div></div>
+
+<!-- SECTION 2: DIAGNOSES -->
 <div class="section" id="dx">
-<div class="section-header" onclick="toggle(this)"><h2>Section 1 &mdash; Clinical reference: top diagnoses</h2><span class="chevron">&#9660;</span></div>
+<div class="section-header" onclick="toggle(this)"><h2>Section 2 &mdash; Clinical reference: top diagnoses</h2><span class="chevron">&#9660;</span></div>
 <div class="section-body">
 
 <div class="step-block">
 <h3>1. Hypertension</h3>
 <p>Chronic elevated blood pressure (&ge;130/80 mmHg). Very common in all nursing home patients. Managed with daily oral medications.</p>
 <div class="tag-row"><span class="badge badge-blue">I10 &mdash; Essential hypertension (most common)</span><span class="badge badge-gray">I11.9 &mdash; Hypertensive heart disease</span><span class="badge badge-gray">I12.9 &mdash; Hypertensive CKD</span></div>
-<h3 style="font-size:13px">Common medications</h3>
 <table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
 <tr><td>Amlodipine (Norvasc)</td><td>Calcium channel blocker</td><td>Once daily; watch for ankle swelling</td></tr>
 <tr><td>Lisinopril / Enalapril</td><td>ACE inhibitor</td><td>Watch for dry cough; check renal function</td></tr>
 <tr><td>Losartan / Valsartan</td><td>ARB</td><td>Use if ACE inhibitor causes cough</td></tr>
 <tr><td>Metoprolol / Atenolol</td><td>Beta blocker</td><td>Also used for AFib rate control</td></tr>
 <tr><td>Hydrochlorothiazide (HCTZ)</td><td>Thiazide diuretic</td><td>Watch electrolytes</td></tr>
-<tr><td>Furosemide (Lasix)</td><td>Loop diuretic</td><td><strong>Also used for heart failure &mdash; confirm with physician</strong></td></tr>
+<tr><td>Furosemide (Lasix)</td><td>Loop diuretic</td><td><strong>Also for heart failure &mdash; confirm with physician</strong></td></tr>
 <tr><td>Hydralazine</td><td>Vasodilator</td><td>Resistant hypertension</td></tr>
 <tr><td>Clonidine</td><td>Central alpha agonist</td><td>Resistant or urgent hypertension</td></tr>
 </table></div>
@@ -118,7 +148,7 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 
 <div class="sep step-block">
 <h3>3. Atrial fibrillation (AFib)</h3>
-<p>Irregular heart rhythm in the upper chambers of the heart. Very common in older adults. Main risk is stroke &mdash; most patients are on blood thinners.</p>
+<p>Irregular heart rhythm in the upper chambers. Very common in older adults. Main risk is stroke &mdash; most patients are on blood thinners.</p>
 <div class="tag-row"><span class="badge badge-blue">I48.91 &mdash; Unspecified AFib (use if type not documented)</span><span class="badge badge-gray">I48.0 &mdash; Paroxysmal AFib</span><span class="badge badge-gray">I48.19 &mdash; Persistent AFib</span><span class="badge badge-gray">I48.20 &mdash; Chronic AFib</span><span class="badge badge-gray">I48.4 &mdash; Atrial flutter</span></div>
 <table><tr><th>Medication</th><th>Class</th><th>Purpose</th></tr>
 <tr><td>Apixaban (Eliquis)</td><td>DOAC anticoagulant</td><td>Stroke prevention &mdash; link to AFib</td></tr>
@@ -137,7 +167,7 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <div class="tag-row"><span class="badge badge-blue">S72.001D &mdash; Right femur neck fracture, subsequent encounter</span><span class="badge badge-blue">S72.002D &mdash; Left femur neck fracture, subsequent encounter</span><span class="badge badge-gray">Z96.641 &mdash; Right total hip replacement</span><span class="badge badge-gray">Z96.642 &mdash; Left total hip replacement</span><span class="badge badge-gray">M80.051A &mdash; Osteoporosis with right femur fracture</span></div>
 <table><tr><th>Order</th><th>Purpose</th></tr>
 <tr><td>Acetaminophen (Tylenol) scheduled</td><td>Pain management &mdash; preferred in elderly</td></tr>
-<tr><td>Oxycodone / Hydrocodone</td><td>Pain management &mdash; controlled substance, use cautiously</td></tr>
+<tr><td>Oxycodone / Hydrocodone</td><td>Pain &mdash; controlled substance, use cautiously</td></tr>
 <tr><td>Enoxaparin (Lovenox)</td><td>DVT prophylaxis post-surgery</td></tr>
 <tr><td>Calcium + Vitamin D</td><td>Bone health &mdash; link to hip fracture / osteoporosis</td></tr>
 <tr><td>Alendronate (Fosamax)</td><td>Osteoporosis treatment</td></tr>
@@ -188,7 +218,7 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 </table>
 <div class="warn-box">TIME-LIMITED: Remove UTI from active problem list once antibiotic course is completed and resolved.</div></div>
 
-<div class="sep">
+<div class="sep step-block">
 <h3>9. Cognitive impairment / dementia</h3>
 <p>Chronic progressive condition affecting memory, thinking, and daily function. Permanent diagnosis &mdash; stays on the active list indefinitely. Never document "confusion" &mdash; always document the underlying diagnosis.</p>
 <div class="tag-row"><span class="badge badge-blue">G30.9 &mdash; Alzheimer's disease, unspecified (most common)</span><span class="badge badge-gray">F02.80 &mdash; Dementia, no behavioral disturbance</span><span class="badge badge-gray">F02.81 &mdash; Dementia with behavioral disturbance</span><span class="badge badge-gray">G31.84 &mdash; Mild cognitive impairment</span><span class="badge badge-gray">F01.50 &mdash; Vascular dementia</span></div>
@@ -199,14 +229,118 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <tr><td>Quetiapine (Seroquel)</td><td>Atypical antipsychotic</td><td>Agitation/psychosis; caution in elderly</td></tr>
 <tr><td>Melatonin</td><td>Sleep aid</td><td>Sundowning / sleep disturbance</td></tr>
 </table>
-<div class="warn-box">Donepezil and Memantine are linked to DEMENTIA &mdash; never to hypertension or diabetes.</div>
+<div class="warn-box">Donepezil and Memantine are linked to DEMENTIA &mdash; never to hypertension or diabetes.</div></div>
+
+<div class="sep step-block">
+<h3>10. Hypothyroidism</h3>
+<p>Underactive thyroid gland. Very common in elderly women. Managed with daily levothyroxine. Monitored with TSH blood levels.</p>
+<div class="tag-row"><span class="badge badge-blue">E03.9 &mdash; Hypothyroidism, unspecified (most common)</span><span class="badge badge-gray">E06.3 &mdash; Autoimmune thyroiditis (Hashimoto's)</span><span class="badge badge-gray">E89.0 &mdash; Post-procedural hypothyroidism</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Levothyroxine (Synthroid, Levoxyl)</td><td>Thyroid hormone replacement</td><td>Take on empty stomach; dose adjusted by TSH</td></tr>
+<tr><td>Liothyronine (Cytomel)</td><td>T3 thyroid hormone</td><td>Less common; combination therapy</td></tr>
+</table>
+<div class="info-box">Levothyroxine is linked to HYPOTHYROIDISM only. Do not document "fatigue" or "feeling cold" &mdash; document hypothyroidism (E03.9) instead.</div></div>
+
+<div class="sep step-block">
+<h3>11. COPD and asthma</h3>
+<p>COPD is a chronic lung condition from airflow obstruction, most often from smoking history. Asthma is reversible airway inflammation. Do not use COPD and asthma interchangeably &mdash; they are different diagnoses.</p>
+<div class="tag-row"><span class="badge badge-blue">J44.1 &mdash; COPD with acute exacerbation</span><span class="badge badge-blue">J44.0 &mdash; COPD with acute lower respiratory infection</span><span class="badge badge-gray">J44.9 &mdash; COPD, unspecified (stable)</span><span class="badge badge-gray">J45.901 &mdash; Unspecified asthma, uncomplicated</span><span class="badge badge-gray">J45.41 &mdash; Moderate persistent asthma</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Tiotropium (Spiriva)</td><td>Long-acting anticholinergic (LAMA)</td><td>Once daily inhaler; COPD maintenance</td></tr>
+<tr><td>Salmeterol / Formoterol</td><td>Long-acting beta agonist (LABA)</td><td>Maintenance inhaler</td></tr>
+<tr><td>Fluticasone / Budesonide inhaler</td><td>Inhaled corticosteroid (ICS)</td><td>Reduces inflammation; maintenance</td></tr>
+<tr><td>Albuterol (Proventil, Ventolin)</td><td>Short-acting beta agonist (SABA)</td><td>Rescue inhaler; acute symptoms only</td></tr>
+<tr><td>Ipratropium (Atrovent)</td><td>Short-acting anticholinergic</td><td>Rescue; often combined with albuterol</td></tr>
+<tr><td>Prednisone / Methylprednisolone</td><td>Oral corticosteroid</td><td>Acute exacerbation; short course</td></tr>
+</table>
+<div class="warn-box">Albuterol and inhalers are linked to COPD or ASTHMA &mdash; never to hypertension, diabetes, or cardiac conditions.</div></div>
+
+<div class="sep step-block">
+<h3>12. Heart failure (CHF)</h3>
+<p>The heart cannot pump blood effectively. Very common in post-acute care. Two main types: HFrEF (reduced ejection fraction) and HFpEF (preserved ejection fraction). Managed with diuretics, ACE inhibitors/ARBs, and beta blockers.</p>
+<div class="tag-row"><span class="badge badge-blue">I50.9 &mdash; Heart failure, unspecified (use if type not documented)</span><span class="badge badge-blue">I50.30 &mdash; Unspecified diastolic heart failure (HFpEF)</span><span class="badge badge-blue">I50.20 &mdash; Unspecified systolic heart failure (HFrEF)</span><span class="badge badge-gray">I50.1 &mdash; Left ventricular failure</span><span class="badge badge-gray">I50.810 &mdash; Right heart failure</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Furosemide (Lasix)</td><td>Loop diuretic</td><td>Fluid removal &mdash; link to heart failure</td></tr>
+<tr><td>Spironolactone / Eplerenone</td><td>Aldosterone antagonist</td><td>Reduces fluid; watch potassium</td></tr>
+<tr><td>Lisinopril / Enalapril</td><td>ACE inhibitor</td><td>Reduces cardiac workload</td></tr>
+<tr><td>Carvedilol / Metoprolol succinate</td><td>Beta blocker</td><td>Improves cardiac function over time</td></tr>
+<tr><td>Sacubitril-valsartan (Entresto)</td><td>ARNI</td><td>HFrEF; reduces hospitalizations</td></tr>
+<tr><td>Empagliflozin (Jardiance)</td><td>SGLT2 inhibitor</td><td>Used for heart failure regardless of diabetes status</td></tr>
+</table>
+<div class="warn-box">Furosemide (Lasix) is most commonly linked to HEART FAILURE, not diabetes. Always confirm with physician.</div></div>
+
+<div class="sep step-block">
+<h3>13. Chronic kidney disease (CKD)</h3>
+<p>Progressive loss of kidney function. Staged 1&ndash;5 by GFR. Stage 5 is end-stage renal disease (ESRD). Very common as a complication of diabetes and hypertension. Significantly affects medication dosing.</p>
+<div class="tag-row"><span class="badge badge-blue">N18.3 &mdash; CKD, stage 3 (most common in post-acute)</span><span class="badge badge-gray">N18.1 &mdash; Stage 1</span><span class="badge badge-gray">N18.2 &mdash; Stage 2</span><span class="badge badge-gray">N18.4 &mdash; Stage 4</span><span class="badge badge-gray">N18.5 &mdash; Stage 5</span><span class="badge badge-gray">N18.6 &mdash; End-stage renal disease (ESRD)</span></div>
+<table><tr><th>Medication / Order</th><th>Notes</th></tr>
+<tr><td>Sevelamer (Renvela)</td><td>Phosphate binder; stage 3&ndash;5</td></tr>
+<tr><td>Sodium bicarbonate</td><td>Metabolic acidosis correction</td></tr>
+<tr><td>Calcitriol / Vitamin D analogs</td><td>Bone disease prevention in CKD</td></tr>
+<tr><td>Dose adjustments</td><td>Many medications require renal dose adjustment &mdash; flag for physician</td></tr>
+</table>
+<div class="info-box">CKD often coexists with hypertension and diabetes. Use combination codes I12.9 (hypertensive CKD) or E11.65 (DM with CKD) as directed by physician.</div></div>
+
+<div class="sep step-block">
+<h3>14. Osteoarthritis and arthritis</h3>
+<p>Osteoarthritis (OA) is wear-and-tear joint degeneration, most common in knees, hips, and hands. Rheumatoid arthritis (RA) is autoimmune inflammatory joint disease. These are different conditions with different medications.</p>
+<div class="tag-row"><span class="badge badge-blue">M19.90 &mdash; Unspecified osteoarthritis (most common)</span><span class="badge badge-gray">M17.11 &mdash; OA, right knee</span><span class="badge badge-gray">M17.12 &mdash; OA, left knee</span><span class="badge badge-gray">M16.11 &mdash; OA, right hip</span><span class="badge badge-gray">M16.12 &mdash; OA, left hip</span><span class="badge badge-gray">M06.9 &mdash; Rheumatoid arthritis, unspecified</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Acetaminophen (Tylenol) scheduled</td><td>Analgesic</td><td>First-line for OA pain in elderly</td></tr>
+<tr><td>Meloxicam (Mobic)</td><td>NSAID (COX-2 selective)</td><td>Safer NSAID option; once daily</td></tr>
+<tr><td>Ibuprofen / Naproxen</td><td>NSAID</td><td>Use cautiously; watch renal function and GI bleeding</td></tr>
+<tr><td>Methotrexate</td><td>DMARD</td><td>Rheumatoid arthritis; requires monitoring</td></tr>
+<tr><td>Hydroxychloroquine (Plaquenil)</td><td>DMARD</td><td>Rheumatoid arthritis; eye monitoring needed</td></tr>
+<tr><td>Prednisone (low dose)</td><td>Corticosteroid</td><td>RA or acute OA flare</td></tr>
+</table>
+<div class="warn-box">NSAIDs are linked to ARTHRITIS pain management &mdash; not to hypertension or diabetes. Note: NSAIDs can worsen hypertension and kidney function &mdash; flag for physician.</div></div>
+
+<div class="sep step-block">
+<h3>15. Depression and anxiety</h3>
+<p>Very common in nursing home patients and often underdiagnosed. Depression in elderly patients may present as withdrawal, loss of appetite, or increased confusion rather than classic sadness. Document the diagnosis, not the symptom.</p>
+<div class="tag-row"><span class="badge badge-blue">F32.9 &mdash; Major depressive disorder, unspecified (most common)</span><span class="badge badge-gray">F33.9 &mdash; Recurrent depressive disorder</span><span class="badge badge-gray">F41.1 &mdash; Generalized anxiety disorder</span><span class="badge badge-gray">F41.9 &mdash; Anxiety disorder, unspecified</span><span class="badge badge-gray">F43.10 &mdash; PTSD, unspecified</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Sertraline (Zoloft)</td><td>SSRI</td><td>First-line antidepressant in elderly</td></tr>
+<tr><td>Escitalopram (Lexapro)</td><td>SSRI</td><td>Well-tolerated in elderly; once daily</td></tr>
+<tr><td>Mirtazapine (Remeron)</td><td>NaSSA antidepressant</td><td>Also stimulates appetite; useful in elderly</td></tr>
+<tr><td>Duloxetine (Cymbalta)</td><td>SNRI</td><td>Also used for chronic pain / neuropathy</td></tr>
+<tr><td>Buspirone</td><td>Anxiolytic</td><td>Non-benzodiazepine; safer for anxiety in elderly</td></tr>
+<tr><td>Lorazepam (Ativan)</td><td>Benzodiazepine</td><td>Acute anxiety only; avoid long-term &mdash; fall risk</td></tr>
+</table>
+<div class="warn-box">SSRIs (Zoloft, Lexapro) are linked to DEPRESSION or ANXIETY &mdash; never to hypertension or diabetes.</div></div>
+
+<div class="sep step-block">
+<h3>16. Osteoporosis</h3>
+<p>Decreased bone density leading to fragile bones and increased fracture risk. Very common in elderly women. Often coexists with hip fracture. Managed with calcium, Vitamin D, and bisphosphonates.</p>
+<div class="tag-row"><span class="badge badge-blue">M81.0 &mdash; Age-related osteoporosis without fracture (most common)</span><span class="badge badge-gray">M80.00XA &mdash; Age-related osteoporosis with fracture</span><span class="badge badge-gray">Z87.310 &mdash; Personal history of osteoporosis</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Calcium carbonate / Calcium citrate</td><td>Mineral supplement</td><td>Link to osteoporosis; take with food</td></tr>
+<tr><td>Vitamin D3 (cholecalciferol)</td><td>Vitamin supplement</td><td>Enhances calcium absorption</td></tr>
+<tr><td>Alendronate (Fosamax)</td><td>Bisphosphonate</td><td>Weekly oral; take on empty stomach, stay upright 30 min</td></tr>
+<tr><td>Risedronate (Actonel)</td><td>Bisphosphonate</td><td>Weekly or monthly oral</td></tr>
+<tr><td>Zoledronic acid (Reclast)</td><td>Bisphosphonate (IV)</td><td>Once yearly IV infusion</td></tr>
+<tr><td>Denosumab (Prolia)</td><td>RANK-L inhibitor</td><td>Injection every 6 months</td></tr>
+</table>
+<div class="info-box">Calcium and Vitamin D supplements are linked to OSTEOPOROSIS. Bisphosphonates are linked to OSTEOPOROSIS only.</div></div>
+
+<div class="sep">
+<h3>17. Dysphagia (swallowing difficulty)</h3>
+<p>Difficulty swallowing food or liquids. Very common in post-acute patients with stroke, dementia, or Parkinson's disease. Increases risk of aspiration pneumonia. Managed by speech therapy and dietary modifications.</p>
+<div class="tag-row"><span class="badge badge-blue">R13.10 &mdash; Dysphagia, unspecified (most common)</span><span class="badge badge-gray">R13.11 &mdash; Oral phase</span><span class="badge badge-gray">R13.12 &mdash; Oropharyngeal phase</span><span class="badge badge-gray">R13.13 &mdash; Pharyngeal phase</span><span class="badge badge-gray">R13.14 &mdash; Pharyngoesophageal phase</span></div>
+<table><tr><th>Order / Intervention</th><th>Purpose</th></tr>
+<tr><td>Speech therapy (SLP) evaluation</td><td>Assess swallowing safety and diet recommendations</td></tr>
+<tr><td>Modified diet texture (minced, pureed)</td><td>Reduce aspiration risk</td></tr>
+<tr><td>Thickened liquids (nectar or honey thick)</td><td>Slow liquid flow to prevent aspiration</td></tr>
+<tr><td>Aspiration precautions</td><td>Upright positioning during/after meals; small bites</td></tr>
+</table>
+<div class="warn-box">Do NOT document "trouble swallowing" or "choking on food" &mdash; document dysphagia (R13.10) with the appropriate phase if known.</div>
 </div>
 
 </div></div>
 
-<!-- SECTION 2: CPT — NO TELEHEALTH -->
+<!-- SECTION 3: CPT -->
 <div class="section" id="cpt">
-<div class="section-header" onclick="toggle(this)"><h2>Section 2 &mdash; CPT codes: nursing facility visits</h2><span class="chevron">&#9660;</span></div>
+<div class="section-header" onclick="toggle(this)"><h2>Section 3 &mdash; CPT codes: nursing facility visits</h2><span class="chevron">&#9660;</span></div>
 <div class="section-body">
 <h3>Nursing facility E/M codes</h3>
 <table><tr><th>CPT</th><th>Description</th><th>Typical use</th></tr>
@@ -228,9 +362,9 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 </table>
 </div></div>
 
-<!-- SECTION 3: MISTAKES -->
+<!-- SECTION 4: MISTAKES -->
 <div class="section" id="mistakes">
-<div class="section-header" onclick="toggle(this)"><h2>Section 3 &mdash; Common documentation mistakes to avoid</h2><span class="chevron">&#9660;</span></div>
+<div class="section-header" onclick="toggle(this)"><h2>Section 4 &mdash; Common documentation mistakes to avoid</h2><span class="chevron">&#9660;</span></div>
 <div class="section-body">
 <h3>Mistake 1: Wrong medication linked to wrong diagnosis</h3>
 <table><tr><th>Medication</th><th>Correct diagnosis</th><th>Common wrong link</th></tr>
@@ -239,8 +373,12 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <tr><td>Eliquis, Xarelto, Warfarin</td><td><span class="badge badge-green">Atrial fibrillation</span></td><td><span class="badge badge-red">HTN or diabetes &mdash; WRONG</span></td></tr>
 <tr><td>Metoprolol, Diltiazem</td><td><span class="badge badge-amber">AFib AND/OR hypertension</span></td><td><span class="badge badge-red">Diabetes alone &mdash; WRONG</span></td></tr>
 <tr><td>Donepezil, Memantine</td><td><span class="badge badge-green">Dementia / cognitive impairment</span></td><td><span class="badge badge-red">Hypertension &mdash; WRONG</span></td></tr>
-<tr><td>Levofloxacin, Azithromycin</td><td><span class="badge badge-green">Active infection (pneumonia, UTI)</span></td><td><span class="badge badge-red">Chronic conditions &mdash; WRONG</span></td></tr>
+<tr><td>Levothyroxine (Synthroid)</td><td><span class="badge badge-green">Hypothyroidism</span></td><td><span class="badge badge-red">Hypertension or diabetes &mdash; WRONG</span></td></tr>
+<tr><td>Albuterol, Tiotropium, inhalers</td><td><span class="badge badge-green">COPD or asthma</span></td><td><span class="badge badge-red">Cardiac conditions &mdash; WRONG</span></td></tr>
 <tr><td>Furosemide (Lasix)</td><td><span class="badge badge-amber">Heart failure OR hypertension (confirm)</span></td><td><span class="badge badge-red">Diabetes &mdash; WRONG</span></td></tr>
+<tr><td>Sertraline, Escitalopram (SSRIs)</td><td><span class="badge badge-green">Depression or anxiety</span></td><td><span class="badge badge-red">Hypertension or diabetes &mdash; WRONG</span></td></tr>
+<tr><td>Alendronate, Calcium, Vitamin D</td><td><span class="badge badge-green">Osteoporosis</span></td><td><span class="badge badge-red">Diabetes or hypertension &mdash; WRONG</span></td></tr>
+<tr><td>Levofloxacin, Azithromycin</td><td><span class="badge badge-green">Active infection (pneumonia, UTI)</span></td><td><span class="badge badge-red">Chronic conditions &mdash; WRONG</span></td></tr>
 </table>
 
 <h3>Mistake 2: Documenting symptoms instead of diagnoses</h3>
@@ -255,27 +393,24 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <tr><td>Redness and swelling of leg</td><td>Cellulitis (L03.90)</td></tr>
 <tr><td>Painful urination / cloudy urine</td><td>Urinary tract infection (N39.0)</td></tr>
 <tr><td>Cough and fever</td><td>Pneumonia (J18.9)</td></tr>
+<tr><td>Fatigue / feeling cold / sluggish</td><td>Hypothyroidism (E03.9)</td></tr>
+<tr><td>Shortness of breath / wheezing</td><td>COPD exacerbation (J44.1) or asthma (J45.901)</td></tr>
+<tr><td>Joint pain / stiff joints</td><td>Osteoarthritis (M19.90) or rheumatoid arthritis (M06.9)</td></tr>
+<tr><td>Sad / withdrawn / not eating</td><td>Major depressive disorder (F32.9)</td></tr>
+<tr><td>Trouble swallowing / choking on food</td><td>Dysphagia (R13.10)</td></tr>
+<tr><td>Swollen legs / ankle swelling</td><td>Heart failure (I50.9) or CKD &mdash; confirm with physician</td></tr>
 </table>
-<div class="info-box">"Confusion," "altered mental status," and "forgetfulness" are symptoms &mdash; not diagnoses. Always document the underlying diagnosis: dementia, cognitive impairment, or delirium as appropriate.</div>
+<div class="info-box">"Confusion," "altered mental status," "forgetfulness," and "agitation" are symptoms &mdash; not diagnoses. Always document the underlying diagnosis: dementia, cognitive impairment, or delirium as appropriate.</div>
 
 <h3>Mistake 3: Carrying forward resolved infection diagnoses</h3>
 <div class="warn-box">Remove once antibiotic course is complete and patient is clinically improved:<br><br>Pneumonia &nbsp;&middot;&nbsp; UTI &nbsp;&middot;&nbsp; Cellulitis / SSTI &nbsp;&middot;&nbsp; Wound infection (once healed)</div>
-<p style="margin-top:.5rem">Chronic conditions (hypertension, diabetes, AFib, dementia) remain permanently on the active list.</p>
+<p style="margin-top:.5rem">Chronic conditions (hypertension, diabetes, AFib, dementia, COPD, hypothyroidism, CKD, osteoporosis) remain permanently on the active list.</p>
 
 <h3>Mistake 4: Overloading the diagnosis list</h3>
 <p>Each visit note should reflect only the top 3&ndash;4 diagnoses being actively managed at that encounter.</p>
 
 <h3>Mistake 5: Missing overnight nursing notes</h3>
 <p>Always review nursing notes before rounds. Flag falls, behavioral changes, new symptoms, abnormal vitals, or changes in mental status.</p>
-</div></div>
-
-<!-- SECTION 4: CHECKLIST -->
-<div class="section" id="checklist">
-<div class="section-header" onclick="toggle(this)"><h2>Section 4 &mdash; Daily morning workflow checklist</h2><span class="chevron">&#9660;</span></div>
-<div class="section-body">
-<p style="margin-bottom:.75rem">Check off each item as you complete it each morning.</p>
-<div id="cl"></div>
-<button class="btn" style="margin-top:.75rem" onclick="resetAll()">Reset all checks</button>
 </div></div>
 
 <!-- SECTION 5: RETIRE -->
@@ -287,6 +422,13 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <tr><td>Diabetes mellitus</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician documents resolution</td></tr>
 <tr><td>Atrial fibrillation</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if cardiologist documents resolution</td></tr>
 <tr><td>Dementia / cognitive impairment</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Never; progressive condition</td></tr>
+<tr><td>Hypothyroidism</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician documents resolution (rare)</td></tr>
+<tr><td>COPD</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Never; use J44.9 (stable) vs J44.1 (exacerbation)</td></tr>
+<tr><td>Heart failure</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician explicitly resolves</td></tr>
+<tr><td>CKD</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician documents resolution (rare)</td></tr>
+<tr><td>Osteoarthritis / rheumatoid arthritis</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician explicitly resolves</td></tr>
+<tr><td>Depression / anxiety</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician documents remission</td></tr>
+<tr><td>Osteoporosis</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician explicitly resolves</td></tr>
 <tr><td>Hip fracture (post-surgical)</td><td><span class="badge badge-amber">As past history</span></td><td>May move to past medical history after healing</td></tr>
 <tr><td>Pneumonia</td><td><span class="badge badge-red">NO &mdash; time-limited</span></td><td>Remove after antibiotic completion + resolution</td></tr>
 <tr><td>UTI</td><td><span class="badge badge-red">NO &mdash; time-limited</span></td><td>Remove after antibiotic completion + resolution</td></tr>
@@ -301,11 +443,15 @@ p{font-size:13px;color:#555;margin-bottom:.5rem}
 <script>
 function toggle(h){h.closest('.section').classList.toggle('collapsed')}
 function jumpTo(id){var el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth'});if(el.classList.contains('collapsed'))toggle(el.querySelector('.section-header'));}}
+function printAll(){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('collapsed');});
+  window.print();
+}
 var steps=[
 {n:1,t:'Check for new admissions',i:['Log into EMR and check census/admission list','Identify new admissions since prior day','Begin pre-populating H&P for each new admit','Pull in discharge summary and medication reconciliation','Note admitting diagnosis and reason for SNF placement']},
 {n:2,t:'Review overnight nursing notes',i:['Open nursing notes for every patient on rounding list','Flag falls, behavioral incidents, new complaints, abnormal vitals','Note if nurse called physician overnight for any issue','Prepare brief summary of flagged patients for physician']},
 {n:3,t:'Review wound care provider notes',i:['Open wound care provider notes','Note changes in wound stage, size, or treatment plan','Flag new wound infections or deteriorating wounds','Confirm correct wound ICD-10 code is in the chart']},
-{n:4,t:'Review labs and diagnostics',i:['Check pending or resulted labs (CBC, BMP, HbA1c, INR)','Note critical or abnormal values to flag for physician','Check imaging results if ordered']},
+{n:4,t:'Review labs and diagnostics',i:['Check pending or resulted labs (CBC, BMP, HbA1c, INR, TSH)','Note critical or abnormal values to flag for physician','Check imaging results if ordered']},
 {n:5,t:'Prepare the rounding list',i:['Organize list in physician\'s preferred rounding order','Note flagged events, labs, wound updates next to each patient','Have chart open and ready before physician enters each room']},
 {n:6,t:'During encounters \u2014 documentation rules',i:['Record diagnoses \u2014 NOT symptoms','Link each medication to the correct diagnosis','Include only top 3\u20134 active diagnoses in visit note','Document new complaints or changes reported by patient/nursing','Confirm physician\'s assessment and plan before finalizing','Do NOT finalize without physician co-signature']},
 {n:7,t:'After rounding \u2014 cleanup',i:['Remove resolved infection diagnoses (UTI, pneumonia, SSTI)','Ensure all new admissions have completed H&P in chart','Confirm wound care updates are reflected in diagnoses','Flag any follow-up items for next day']}

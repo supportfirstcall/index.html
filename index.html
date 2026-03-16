@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Scribe Onboarding Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;font-size:14px;line-height:1.6;background:#f5f5f2}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+h1{font-size:24px;font-weight:500;margin-bottom:4px}
+h2{font-size:17px;font-weight:500;margin:1.5rem 0 .5rem}
+h3{font-size:15px;font-weight:500;margin:1.2rem 0 .4rem}
+.subtitle{font-size:13px;color:#666;margin-bottom:1.5rem}
+.section{border:1px solid #ddd;border-radius:12px;margin-bottom:1.5rem;overflow:hidden;background:#fff}
+.section-header{padding:.75rem 1rem;background:#f5f5f2;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.section-header h2{margin:0}
+.section-body{padding:1rem}
+.chevron{font-size:12px;color:#888;transition:transform .2s;display:inline-block}
+.collapsed .chevron{transform:rotate(-90deg)}
+.collapsed .section-body{display:none}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:.5rem 0 1rem}
+th{background:#f5f5f2;padding:6px 10px;text-align:left;font-weight:500;border:1px solid #ddd}
+td{padding:6px 10px;border:1px solid #ddd;vertical-align:top}
+tr:nth-child(even) td{background:#fafafa}
+tr.highlight td{background:#EAF3DE;font-weight:500}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-green{background:#EAF3DE;color:#27500A}
+.badge-red{background:#FCEBEB;color:#791F1F}
+.badge-amber{background:#FAEEDA;color:#633806}
+.badge-blue{background:#E6F1FB;color:#0C447C}
+.badge-gray{background:#F1EFE8;color:#444441}
+.warn-box{background:#FCEBEB;border-left:3px solid #E24B4A;padding:.6rem .8rem;margin:.5rem 0;font-size:13px;color:#791F1F}
+.info-box{background:#E6F1FB;border-left:3px solid #378ADD;padding:.6rem .8rem;margin:.5rem 0;font-size:13px;color:#0C447C}
+.check-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:13px}
+.check-box{width:16px;height:16px;border:1px solid #bbb;border-radius:3px;flex-shrink:0;margin-top:2px;cursor:pointer;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.check-box.checked{background:#1D9E75;border-color:#0F6E56;color:#fff}
+.step-num{background:#E6F1FB;color:#0C447C;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.step-title{font-weight:500;font-size:14px}
+.step-block{margin-bottom:1rem}
+.step-items{margin-left:30px;margin-top:.4rem}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:.3rem 0 .7rem}
+p{font-size:13px;color:#555;margin-bottom:.5rem}
+.btn{background:#f5f5f2;border:1px solid #ccc;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer}
+.btn:hover{background:#ebebeb}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+.metric-card{background:#fff;border-radius:8px;padding:.75rem 1rem;border:1px solid #eee}
+.metric-label{font-size:11px;color:#888;margin-bottom:2px}
+.metric-val{font-size:22px;font-weight:500}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.sep{border-top:1px solid #eee;padding-top:1rem;margin-top:.2rem}
+@media print{.btn,.nav{display:none}.section{break-inside:avoid}.collapsed .section-body{display:block!important}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.25rem">
+<div>
+<h1>Medical Scribe Onboarding Guide</h1>
+<div class="subtitle">Post-acute care / nursing home setting &middot; Clinical reference, coding &amp; daily workflow</div>
+</div>
+<button class="btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<div class="metrics">
+<div class="metric-card"><div class="metric-label">Diagnoses covered</div><div class="metric-val">9</div></div>
+<div class="metric-card"><div class="metric-label">ICD-10 codes</div><div class="metric-val">50+</div></div>
+<div class="metric-card"><div class="metric-label">CPT codes</div><div class="metric-val">12</div></div>
+<div class="metric-card"><div class="metric-label">Workflow steps</div><div class="metric-val">7</div></div>
+</div>
+
+<div class="info-box" style="margin-bottom:1rem">Use the toggles to expand/collapse each section. Use the checklist in Section 4 every morning before rounds.</div>
+
+<div class="nav">
+<button class="btn" onclick="jumpTo('dx')">Diagnoses</button>
+<button class="btn" onclick="jumpTo('cpt')">CPT codes</button>
+<button class="btn" onclick="jumpTo('mistakes')">Mistakes to avoid</button>
+<button class="btn" onclick="jumpTo('checklist')">Morning checklist</button>
+<button class="btn" onclick="jumpTo('retire')">Retiring diagnoses</button>
+</div>
+
+<!-- SECTION 1: DIAGNOSES -->
+<div class="section" id="dx">
+<div class="section-header" onclick="toggle(this)"><h2>Section 1 &mdash; Clinical reference: top diagnoses</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+
+<div class="step-block">
+<h3>1. Hypertension</h3>
+<p>Chronic elevated blood pressure (&ge;130/80 mmHg). Very common in all nursing home patients. Managed with daily oral medications.</p>
+<div class="tag-row"><span class="badge badge-blue">I10 &mdash; Essential hypertension (most common)</span><span class="badge badge-gray">I11.9 &mdash; Hypertensive heart disease</span><span class="badge badge-gray">I12.9 &mdash; Hypertensive CKD</span></div>
+<h3 style="font-size:13px">Common medications</h3>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Amlodipine (Norvasc)</td><td>Calcium channel blocker</td><td>Once daily; watch for ankle swelling</td></tr>
+<tr><td>Lisinopril / Enalapril</td><td>ACE inhibitor</td><td>Watch for dry cough; check renal function</td></tr>
+<tr><td>Losartan / Valsartan</td><td>ARB</td><td>Use if ACE inhibitor causes cough</td></tr>
+<tr><td>Metoprolol / Atenolol</td><td>Beta blocker</td><td>Also used for AFib rate control</td></tr>
+<tr><td>Hydrochlorothiazide (HCTZ)</td><td>Thiazide diuretic</td><td>Watch electrolytes</td></tr>
+<tr><td>Furosemide (Lasix)</td><td>Loop diuretic</td><td><strong>Also used for heart failure &mdash; confirm with physician</strong></td></tr>
+<tr><td>Hydralazine</td><td>Vasodilator</td><td>Resistant hypertension</td></tr>
+<tr><td>Clonidine</td><td>Central alpha agonist</td><td>Resistant or urgent hypertension</td></tr>
+</table></div>
+
+<div class="sep step-block">
+<h3>2. Diabetes mellitus (type 2)</h3>
+<p>Chronic metabolic condition affecting blood sugar regulation. Most common form in nursing home patients. Managed with oral medications and/or insulin.</p>
+<div class="tag-row"><span class="badge badge-blue">E11.9 &mdash; Type 2 DM, no complications (most common)</span><span class="badge badge-gray">E11.65 &mdash; With hyperglycemia</span><span class="badge badge-gray">E11.40 &mdash; With neuropathy</span><span class="badge badge-gray">E10.9 &mdash; Type 1 DM (only if type 1)</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Metformin</td><td>Biguanide</td><td>First-line oral; hold if contrast dye used</td></tr>
+<tr><td>Glipizide / Glimepiride</td><td>Sulfonylurea</td><td>Risk of hypoglycemia in elderly</td></tr>
+<tr><td>Insulin glargine (Lantus)</td><td>Long-acting insulin</td><td>Once daily basal insulin</td></tr>
+<tr><td>Insulin lispro / aspart</td><td>Rapid-acting insulin</td><td>Given with meals</td></tr>
+<tr><td>Sitagliptin (Januvia)</td><td>DPP-4 inhibitor</td><td>Low hypoglycemia risk</td></tr>
+<tr><td>Empagliflozin (Jardiance)</td><td>SGLT2 inhibitor</td><td>Also cardioprotective</td></tr>
+<tr><td>Liraglutide (Victoza)</td><td>GLP-1 agonist</td><td>Injectable; weight and CV benefit</td></tr>
+</table>
+<div class="warn-box">Insulin and metformin are linked to DIABETES only &mdash; never to hypertension or AFib.</div></div>
+
+<div class="sep step-block">
+<h3>3. Atrial fibrillation (AFib)</h3>
+<p>Irregular heart rhythm in the upper chambers of the heart. Very common in older adults. Main risk is stroke &mdash; most patients are on blood thinners.</p>
+<div class="tag-row"><span class="badge badge-blue">I48.91 &mdash; Unspecified AFib (use if type not documented)</span><span class="badge badge-gray">I48.0 &mdash; Paroxysmal AFib</span><span class="badge badge-gray">I48.19 &mdash; Persistent AFib</span><span class="badge badge-gray">I48.20 &mdash; Chronic AFib</span><span class="badge badge-gray">I48.4 &mdash; Atrial flutter</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Purpose</th></tr>
+<tr><td>Apixaban (Eliquis)</td><td>DOAC anticoagulant</td><td>Stroke prevention &mdash; link to AFib</td></tr>
+<tr><td>Rivaroxaban (Xarelto)</td><td>DOAC anticoagulant</td><td>Stroke prevention &mdash; link to AFib</td></tr>
+<tr><td>Warfarin (Coumadin)</td><td>Anticoagulant</td><td>Stroke prevention; requires INR monitoring</td></tr>
+<tr><td>Dabigatran (Pradaxa)</td><td>DOAC anticoagulant</td><td>Stroke prevention; twice daily</td></tr>
+<tr><td>Metoprolol / Diltiazem</td><td>Beta blocker / CCB</td><td>Rate control for AFib</td></tr>
+<tr><td>Amiodarone</td><td>Antiarrhythmic</td><td>Rhythm control; many drug interactions</td></tr>
+<tr><td>Digoxin</td><td>Cardiac glycoside</td><td>Rate control, mainly with heart failure</td></tr>
+</table>
+<div class="warn-box">Blood thinners (Eliquis, Xarelto, warfarin) are linked to AFIB &mdash; NOT hypertension or diabetes.</div></div>
+
+<div class="sep step-block">
+<h3>4. Hip fracture</h3>
+<p>Break in the upper femur near the hip joint. Common after falls in elderly patients. Often requires surgical repair. Post-op care includes PT, DVT prophylaxis, and pain management.</p>
+<div class="tag-row"><span class="badge badge-blue">S72.001D &mdash; Right femur neck fracture, subsequent encounter</span><span class="badge badge-blue">S72.002D &mdash; Left femur neck fracture, subsequent encounter</span><span class="badge badge-gray">Z96.641 &mdash; Right total hip replacement</span><span class="badge badge-gray">Z96.642 &mdash; Left total hip replacement</span><span class="badge badge-gray">M80.051A &mdash; Osteoporosis with right femur fracture</span></div>
+<table><tr><th>Order</th><th>Purpose</th></tr>
+<tr><td>Acetaminophen (Tylenol) scheduled</td><td>Pain management &mdash; preferred in elderly</td></tr>
+<tr><td>Oxycodone / Hydrocodone</td><td>Pain management &mdash; controlled substance, use cautiously</td></tr>
+<tr><td>Enoxaparin (Lovenox)</td><td>DVT prophylaxis post-surgery</td></tr>
+<tr><td>Calcium + Vitamin D</td><td>Bone health &mdash; link to hip fracture / osteoporosis</td></tr>
+<tr><td>Alendronate (Fosamax)</td><td>Osteoporosis treatment</td></tr>
+</table></div>
+
+<div class="sep step-block">
+<h3>5. Skin and soft tissue infections (SSTIs)</h3>
+<p>Bacterial infections of the skin and underlying tissue. Common types: cellulitis, infected wounds, infected pressure injuries. Treated with antibiotics for a defined course (typically 5&ndash;14 days).</p>
+<div class="tag-row"><span class="badge badge-blue">L03.90 &mdash; Cellulitis, unspecified</span><span class="badge badge-gray">L03.119 &mdash; Cellulitis of limb</span><span class="badge badge-gray">L03.311 &mdash; Cellulitis of abdominal wall</span><span class="badge badge-gray">L02.91 &mdash; Cutaneous abscess</span></div>
+<table><tr><th>Antibiotic</th><th>Coverage</th><th>Route</th></tr>
+<tr><td>Cephalexin (Keflex)</td><td>Strep/staph cellulitis</td><td>Oral</td></tr>
+<tr><td>Bactrim (TMP-SMX)</td><td>MRSA coverage</td><td>Oral</td></tr>
+<tr><td>Doxycycline</td><td>MRSA coverage</td><td>Oral</td></tr>
+<tr><td>Clindamycin</td><td>MRSA / anaerobic</td><td>Oral or IV</td></tr>
+<tr><td>Vancomycin</td><td>MRSA (severe)</td><td>IV</td></tr>
+</table>
+<div class="warn-box">TIME-LIMITED: Remove from active list once antibiotic course is complete and infection resolved.</div></div>
+
+<div class="sep step-block">
+<h3>6. Wounds and pressure injuries</h3>
+<p>Pressure injuries form over bony prominences (sacrum, heels, hips). Staged I&ndash;IV by depth. Review wound care provider notes daily.</p>
+<div class="tag-row"><span class="badge badge-blue">L89.151 &mdash; Sacral, stage 1</span><span class="badge badge-blue">L89.152 &mdash; Sacral, stage 2</span><span class="badge badge-blue">L89.153 &mdash; Sacral, stage 3</span><span class="badge badge-blue">L89.154 &mdash; Sacral, stage 4</span><span class="badge badge-gray">L89.150 &mdash; Sacral, unstageable</span><span class="badge badge-gray">L89.621 &mdash; Left heel, stage 1</span><span class="badge badge-gray">L89.622 &mdash; Left heel, stage 2</span></div>
+<div class="info-box">Always review wound care provider notes for: current stage, wound size (cm), wound bed description, drainage type, dressing type, and signs of infection. Flag any deteriorating wounds for physician.</div></div>
+
+<div class="sep step-block">
+<h3>7. Pneumonia</h3>
+<p>Infection of the lung tissue. Aspiration pneumonia (from swallowing difficulty) is especially common in nursing home patients.</p>
+<div class="tag-row"><span class="badge badge-blue">J18.9 &mdash; Pneumonia, unspecified (most common)</span><span class="badge badge-gray">J15.9 &mdash; Bacterial pneumonia</span><span class="badge badge-gray">J69.0 &mdash; Aspiration pneumonia</span><span class="badge badge-gray">J15.212 &mdash; MRSA pneumonia</span></div>
+<table><tr><th>Antibiotic</th><th>Use case</th></tr>
+<tr><td>Azithromycin</td><td>Mild CAP &mdash; atypical coverage</td></tr>
+<tr><td>Amoxicillin-clavulanate (Augmentin)</td><td>Mild-moderate CAP</td></tr>
+<tr><td>Levofloxacin (Levaquin)</td><td>CAP with comorbidities; watch QT interval</td></tr>
+<tr><td>Ceftriaxone + Azithromycin</td><td>Moderate CAP</td></tr>
+<tr><td>Piperacillin-tazobactam</td><td>Aspiration or hospital-acquired pneumonia</td></tr>
+</table>
+<div class="warn-box">TIME-LIMITED: Remove pneumonia once antibiotic course is complete and patient is clinically improved.</div></div>
+
+<div class="sep step-block">
+<h3>8. Urinary tract infection (UTI)</h3>
+<p>Bacterial infection of the urinary tract. Asymptomatic bacteriuria (bacteria in urine without symptoms) should NOT be documented as UTI or treated.</p>
+<div class="tag-row"><span class="badge badge-blue">N39.0 &mdash; UTI, site not specified (most common)</span><span class="badge badge-gray">N30.00 &mdash; Acute cystitis</span><span class="badge badge-gray">N10 &mdash; Pyelonephritis</span><span class="badge badge-gray">T83.511A &mdash; Catheter-associated UTI</span></div>
+<table><tr><th>Antibiotic</th><th>Use case</th></tr>
+<tr><td>Nitrofurantoin (Macrobid)</td><td>Uncomplicated UTI; avoid if GFR &lt;30</td></tr>
+<tr><td>Bactrim (TMP-SMX)</td><td>Uncomplicated UTI</td></tr>
+<tr><td>Ciprofloxacin / Levofloxacin</td><td>Complicated UTI or pyelonephritis</td></tr>
+<tr><td>Ceftriaxone (IV)</td><td>Severe UTI / septic presentation</td></tr>
+<tr><td>Fosfomycin</td><td>Single-dose uncomplicated UTI; ESBL coverage</td></tr>
+</table>
+<div class="warn-box">TIME-LIMITED: Remove UTI from active problem list once antibiotic course is completed and resolved.</div></div>
+
+<div class="sep">
+<h3>9. Cognitive impairment / dementia</h3>
+<p>Chronic progressive condition affecting memory, thinking, and daily function. Permanent diagnosis &mdash; stays on the active list indefinitely. Never document "confusion" &mdash; always document the underlying diagnosis.</p>
+<div class="tag-row"><span class="badge badge-blue">G30.9 &mdash; Alzheimer's disease, unspecified (most common)</span><span class="badge badge-gray">F02.80 &mdash; Dementia, no behavioral disturbance</span><span class="badge badge-gray">F02.81 &mdash; Dementia with behavioral disturbance</span><span class="badge badge-gray">G31.84 &mdash; Mild cognitive impairment</span><span class="badge badge-gray">F01.50 &mdash; Vascular dementia</span></div>
+<table><tr><th>Medication</th><th>Class</th><th>Notes</th></tr>
+<tr><td>Donepezil (Aricept)</td><td>Cholinesterase inhibitor</td><td>Once daily at bedtime</td></tr>
+<tr><td>Rivastigmine (Exelon)</td><td>Cholinesterase inhibitor</td><td>Also available as skin patch</td></tr>
+<tr><td>Memantine (Namenda)</td><td>NMDA antagonist</td><td>Moderate-severe dementia</td></tr>
+<tr><td>Quetiapine (Seroquel)</td><td>Atypical antipsychotic</td><td>Agitation/psychosis; caution in elderly</td></tr>
+<tr><td>Melatonin</td><td>Sleep aid</td><td>Sundowning / sleep disturbance</td></tr>
+</table>
+<div class="warn-box">Donepezil and Memantine are linked to DEMENTIA &mdash; never to hypertension or diabetes.</div>
+</div>
+
+</div></div>
+
+<!-- SECTION 2: CPT — NO TELEHEALTH -->
+<div class="section" id="cpt">
+<div class="section-header" onclick="toggle(this)"><h2>Section 2 &mdash; CPT codes: nursing facility visits</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+<h3>Nursing facility E/M codes</h3>
+<table><tr><th>CPT</th><th>Description</th><th>Typical use</th></tr>
+<tr><td><strong>99304</strong></td><td>Initial NF care &mdash; straightforward/low</td><td>New admission, lower complexity</td></tr>
+<tr><td><strong>99305</strong></td><td>Initial NF care &mdash; moderate complexity</td><td>New admission, moderate</td></tr>
+<tr><td><strong>99306</strong></td><td>Initial NF care &mdash; high complexity</td><td>New admission, high acuity</td></tr>
+<tr><td><strong>99307</strong></td><td>Subsequent NF care &mdash; low complexity</td><td>Stable follow-up</td></tr>
+<tr><td><strong>99308</strong></td><td>Subsequent NF care &mdash; moderate complexity</td><td>Most common follow-up code</td></tr>
+<tr><td><strong>99309</strong></td><td>Subsequent NF care &mdash; high complexity</td><td>Multiple changes or conditions</td></tr>
+<tr><td><strong>99310</strong></td><td>Subsequent NF care &mdash; highest complexity</td><td>Serious/unstable patient</td></tr>
+<tr><td><strong>99315</strong></td><td>Discharge management &mdash; 30 min or less</td><td>Standard discharge</td></tr>
+<tr><td><strong>99316</strong></td><td>Discharge management &mdash; more than 30 min</td><td>Complex discharge</td></tr>
+</table>
+<h3>Wound debridement</h3>
+<table><tr><th>CPT</th><th>Description</th></tr>
+<tr><td><strong>97597</strong></td><td>Debridement, open wound &mdash; first 20 sq cm</td></tr>
+<tr><td><strong>97598</strong></td><td>Debridement &mdash; each additional 20 sq cm</td></tr>
+<tr><td><strong>97602</strong></td><td>Non-selective debridement without anesthesia</td></tr>
+</table>
+</div></div>
+
+<!-- SECTION 3: MISTAKES -->
+<div class="section" id="mistakes">
+<div class="section-header" onclick="toggle(this)"><h2>Section 3 &mdash; Common documentation mistakes to avoid</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+<h3>Mistake 1: Wrong medication linked to wrong diagnosis</h3>
+<table><tr><th>Medication</th><th>Correct diagnosis</th><th>Common wrong link</th></tr>
+<tr><td>Metformin, Insulin, Januvia</td><td><span class="badge badge-green">Diabetes mellitus</span></td><td><span class="badge badge-red">Hypertension &mdash; WRONG</span></td></tr>
+<tr><td>Amlodipine, Lisinopril, HCTZ</td><td><span class="badge badge-green">Hypertension</span></td><td><span class="badge badge-red">Diabetes &mdash; WRONG</span></td></tr>
+<tr><td>Eliquis, Xarelto, Warfarin</td><td><span class="badge badge-green">Atrial fibrillation</span></td><td><span class="badge badge-red">HTN or diabetes &mdash; WRONG</span></td></tr>
+<tr><td>Metoprolol, Diltiazem</td><td><span class="badge badge-amber">AFib AND/OR hypertension</span></td><td><span class="badge badge-red">Diabetes alone &mdash; WRONG</span></td></tr>
+<tr><td>Donepezil, Memantine</td><td><span class="badge badge-green">Dementia / cognitive impairment</span></td><td><span class="badge badge-red">Hypertension &mdash; WRONG</span></td></tr>
+<tr><td>Levofloxacin, Azithromycin</td><td><span class="badge badge-green">Active infection (pneumonia, UTI)</span></td><td><span class="badge badge-red">Chronic conditions &mdash; WRONG</span></td></tr>
+<tr><td>Furosemide (Lasix)</td><td><span class="badge badge-amber">Heart failure OR hypertension (confirm)</span></td><td><span class="badge badge-red">Diabetes &mdash; WRONG</span></td></tr>
+</table>
+
+<h3>Mistake 2: Documenting symptoms instead of diagnoses</h3>
+<table>
+<tr><th>Do NOT document (symptom)</th><th>DO document (diagnosis + ICD-10)</th></tr>
+<tr><td>Elevated blood pressure</td><td>Hypertension (I10)</td></tr>
+<tr><td>High blood sugar / elevated glucose</td><td>Diabetes mellitus type 2 (E11.9)</td></tr>
+<tr><td>Irregular heartbeat</td><td>Atrial fibrillation (I48.91)</td></tr>
+<tr class="highlight"><td><strong>Confusion / altered mental status</strong></td><td><strong>Dementia / cognitive impairment (G30.9, F02.80)</strong></td></tr>
+<tr class="highlight"><td><strong>Forgetfulness / memory loss</strong></td><td><strong>Dementia / Alzheimer's disease (G30.9)</strong></td></tr>
+<tr class="highlight"><td><strong>Agitation / behavioral changes</strong></td><td><strong>Dementia with behavioral disturbance (F02.81)</strong></td></tr>
+<tr><td>Redness and swelling of leg</td><td>Cellulitis (L03.90)</td></tr>
+<tr><td>Painful urination / cloudy urine</td><td>Urinary tract infection (N39.0)</td></tr>
+<tr><td>Cough and fever</td><td>Pneumonia (J18.9)</td></tr>
+</table>
+<div class="info-box">"Confusion," "altered mental status," and "forgetfulness" are symptoms &mdash; not diagnoses. Always document the underlying diagnosis: dementia, cognitive impairment, or delirium as appropriate.</div>
+
+<h3>Mistake 3: Carrying forward resolved infection diagnoses</h3>
+<div class="warn-box">Remove once antibiotic course is complete and patient is clinically improved:<br><br>Pneumonia &nbsp;&middot;&nbsp; UTI &nbsp;&middot;&nbsp; Cellulitis / SSTI &nbsp;&middot;&nbsp; Wound infection (once healed)</div>
+<p style="margin-top:.5rem">Chronic conditions (hypertension, diabetes, AFib, dementia) remain permanently on the active list.</p>
+
+<h3>Mistake 4: Overloading the diagnosis list</h3>
+<p>Each visit note should reflect only the top 3&ndash;4 diagnoses being actively managed at that encounter.</p>
+
+<h3>Mistake 5: Missing overnight nursing notes</h3>
+<p>Always review nursing notes before rounds. Flag falls, behavioral changes, new symptoms, abnormal vitals, or changes in mental status.</p>
+</div></div>
+
+<!-- SECTION 4: CHECKLIST -->
+<div class="section" id="checklist">
+<div class="section-header" onclick="toggle(this)"><h2>Section 4 &mdash; Daily morning workflow checklist</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+<p style="margin-bottom:.75rem">Check off each item as you complete it each morning.</p>
+<div id="cl"></div>
+<button class="btn" style="margin-top:.75rem" onclick="resetAll()">Reset all checks</button>
+</div></div>
+
+<!-- SECTION 5: RETIRE -->
+<div class="section" id="retire">
+<div class="section-header" onclick="toggle(this)"><h2>Section 5 &mdash; When to retire a diagnosis</h2><span class="chevron">&#9660;</span></div>
+<div class="section-body">
+<table><tr><th>Diagnosis</th><th>Keep active?</th><th>When to remove</th></tr>
+<tr><td>Hypertension</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician explicitly resolves</td></tr>
+<tr><td>Diabetes mellitus</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if physician documents resolution</td></tr>
+<tr><td>Atrial fibrillation</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Only if cardiologist documents resolution</td></tr>
+<tr><td>Dementia / cognitive impairment</td><td><span class="badge badge-green">YES &mdash; permanent</span></td><td>Never; progressive condition</td></tr>
+<tr><td>Hip fracture (post-surgical)</td><td><span class="badge badge-amber">As past history</span></td><td>May move to past medical history after healing</td></tr>
+<tr><td>Pneumonia</td><td><span class="badge badge-red">NO &mdash; time-limited</span></td><td>Remove after antibiotic completion + resolution</td></tr>
+<tr><td>UTI</td><td><span class="badge badge-red">NO &mdash; time-limited</span></td><td>Remove after antibiotic completion + resolution</td></tr>
+<tr><td>Cellulitis / SSTI</td><td><span class="badge badge-red">NO &mdash; time-limited</span></td><td>Remove after antibiotic completion + resolution</td></tr>
+<tr><td>Wound infection</td><td><span class="badge badge-amber">Conditional</span></td><td>Remove infection qualifier once healed; keep wound dx if wound remains open</td></tr>
+</table>
+</div></div>
+
+<div style="font-size:12px;color:#999;margin-top:1rem;padding-top:.75rem;border-top:1px solid #eee">Medical scribe onboarding guide &mdash; post-acute care setting. For clinical questions, consult the attending physician before documenting.</div>
+</div>
+
+<script>
+function toggle(h){h.closest('.section').classList.toggle('collapsed')}
+function jumpTo(id){var el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth'});if(el.classList.contains('collapsed'))toggle(el.querySelector('.section-header'));}}
+var steps=[
+{n:1,t:'Check for new admissions',i:['Log into EMR and check census/admission list','Identify new admissions since prior day','Begin pre-populating H&P for each new admit','Pull in discharge summary and medication reconciliation','Note admitting diagnosis and reason for SNF placement']},
+{n:2,t:'Review overnight nursing notes',i:['Open nursing notes for every patient on rounding list','Flag falls, behavioral incidents, new complaints, abnormal vitals','Note if nurse called physician overnight for any issue','Prepare brief summary of flagged patients for physician']},
+{n:3,t:'Review wound care provider notes',i:['Open wound care provider notes','Note changes in wound stage, size, or treatment plan','Flag new wound infections or deteriorating wounds','Confirm correct wound ICD-10 code is in the chart']},
+{n:4,t:'Review labs and diagnostics',i:['Check pending or resulted labs (CBC, BMP, HbA1c, INR)','Note critical or abnormal values to flag for physician','Check imaging results if ordered']},
+{n:5,t:'Prepare the rounding list',i:['Organize list in physician\'s preferred rounding order','Note flagged events, labs, wound updates next to each patient','Have chart open and ready before physician enters each room']},
+{n:6,t:'During encounters \u2014 documentation rules',i:['Record diagnoses \u2014 NOT symptoms','Link each medication to the correct diagnosis','Include only top 3\u20134 active diagnoses in visit note','Document new complaints or changes reported by patient/nursing','Confirm physician\'s assessment and plan before finalizing','Do NOT finalize without physician co-signature']},
+{n:7,t:'After rounding \u2014 cleanup',i:['Remove resolved infection diagnoses (UTI, pneumonia, SSTI)','Ensure all new admissions have completed H&P in chart','Confirm wound care updates are reflected in diagnoses','Flag any follow-up items for next day']}
+];
+var checks={};
+var cl=document.getElementById('cl');
+steps.forEach(function(s){
+  var d=document.createElement('div');d.className='step-block';
+  d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem"><div class="step-num">'+s.n+'</div><span class="step-title">'+s.t+'</span></div>';
+  var id2=document.createElement('div');id2.className='step-items';
+  s.i.forEach(function(item,i){
+    var id='c'+s.n+'_'+i;
+    var row=document.createElement('div');row.className='check-item';
+    var box=document.createElement('div');box.className='check-box';box.id=id;
+    box.onclick=(function(bid){return function(){checks[bid]=!checks[bid];this.className='check-box'+(checks[bid]?' checked':'');this.textContent=checks[bid]?'\u2713':'';};})(id).bind(box);
+    var lbl=document.createElement('span');lbl.textContent=item;
+    row.appendChild(box);row.appendChild(lbl);id2.appendChild(row);
+  });
+  d.appendChild(id2);
+  if(s.n<7){var sep=document.createElement('div');sep.style='border-top:1px solid #eee;margin:.75rem 0';d.appendChild(sep);}
+  cl.appendChild(d);
+});
+function resetAll(){checks={};document.querySelectorAll('.check-box').forEach(function(b){b.className='check-box';b.textContent='';})}
+</script>
+</body>
+</html>
